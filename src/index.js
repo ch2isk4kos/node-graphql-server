@@ -1,21 +1,5 @@
 const { ApolloServer } = require("apollo-server");
 
-// root fields Query, Mutation, Subscription define the available API operations
-
-// 1: Defines GraphQL schema
-const typeDefs = `
-  type Query {
-    info: String!
-    feed: [Link!]!
-  }
-  type Link {
-    id: ID!
-    description: String!
-    url: String!
-  }
-`;
-// '!' means that value cannot be null
-
 let links = [
   {
     id: "link-0",
@@ -24,10 +8,8 @@ let links = [
   },
 ];
 
-// 2: implementation of GraphQL schema
 const resolvers = {
   Query: {
-    //   must return the same time as defined in typeDef
     info: () => `This is the API of a Hackernews Clone`,
     feed: () => links,
   },
@@ -37,9 +19,7 @@ const resolvers = {
     url: (parent) => parent.url,
   },
 };
-// GraphQL queries resolve by invoking the resolver functions for the fields contained in the query.
 
-// 3: Schemas get bundled and passed to the server
 const server = new ApolloServer({
   typeDefs,
   resolvers,
