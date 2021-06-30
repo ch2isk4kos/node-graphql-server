@@ -1,11 +1,21 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+// datasource: specifies db connection
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
+// generator: indicatation to generate Prisma Client
 generator client {
   provider = "prisma-client-js"
+}
+
+// data model: each model is mapped to a table in the db
+model Link {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  description String
+  url         String
 }
