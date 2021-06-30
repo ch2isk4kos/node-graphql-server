@@ -3,10 +3,12 @@
     "start": "nodemon src/index.js"
   },
   "dependencies": {
+    "@prisma/client": "^2.26.0",
     "apollo-server": "^2.25.2",
     "graphql": "^15.5.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.8"
+    "nodemon": "^2.0.8",
+    "prisma": "^2.26.0"
   }
 }
