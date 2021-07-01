@@ -1,5 +1,6 @@
 const { ApolloServer } = require("apollo-server");
 const { PrismaClient } = require("@prisma/client");
+const { PubSub } = require("apollo-server");
 const { getUserId } = require("./utils");
 const fs = require("fs");
 const path = require("path");
@@ -15,6 +16,7 @@ const resolvers = {
   Link,
 };
 
+const pubsub = new PubSub();
 const prisma = new PrismaClient();
 const server = new ApolloServer({
   typeDefs: fs.readFileSync(path.join(__dirname, "schema.graphql"), "utf8"),
@@ -23,6 +25,7 @@ const server = new ApolloServer({
     return {
       ...req,
       prisma,
+      pubsub,
       userId: req && req.headers.authorization ? getUserId(req) : null,
     };
   },
@@ -39,3 +42,14 @@ server.listen().then(({ url }) => console.log(`Server is running on ${url}`));
 
 // Prisma Client exposes a CRUD API for the models in your data model for you to read and write in your database.
 // These methods are auto-generated based on your model definitions in schema.prisma
+
+// PubSub from the apollo-server library is used to implement subscriptions to the following events:
+// A new model is created
+// An existing model updated
+// An existing model is deleted
+
+// First add an instance of PubSub to the context, just as we did with PrismaClient,
+// and then calling its methods in the resolvers that handle each of the above events.
+
+// Once you pass `pubsub` variable to the resolvers, you can access the methods needed to implement our subscriptions
+// from inside our resolvers via `context.pubsub`.
