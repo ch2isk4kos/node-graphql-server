@@ -8,46 +8,6 @@ const Mutation = require("./resolvers/Mutation");
 const User = require("./resolvers/User");
 const Link = require("./resolvers/Link");
 
-// let links = [
-//   {
-//     id: "link-0",
-//     url: "www.howtographql.com",
-//     description: "Fullstack tutorial for GraphQL",
-//   },
-// ];
-
-// let idCount = links.length;
-
-// const resolvers = {
-//   Query: {
-//     info: () => `This is the API of a Hackernews Clone`,
-//     // feed: () => links,
-//     feed: async (parent, args, context, info) => {
-//       return context.prisma.link.findMany();
-//     },
-//   },
-//   Mutation: {
-//     // 2
-//     // createLink: (parent, args) => {
-//     createLink: (parent, args, context, info) => {
-//       //   const link = {
-//       //     id: `link-${idCount++}`,
-//       //     description: args.description,
-//       //     url: args.url,
-//       //   };
-//       //   links.push(link);
-//       //   return link;
-//       const newLink = context.prisma.link.create({
-//         data: {
-//           url: args.url,
-//           description: args.description,
-//         },
-//       });
-//       return newLink;
-//     },
-//   },
-// };
-
 const resolvers = {
   Query,
   Mutation,
