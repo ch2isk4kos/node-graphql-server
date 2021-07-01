@@ -1,16 +1,16 @@
 async function signup(parent, args, context, info) {
-  // 1
+  // 1: encrypt user password with bycryptJS library
   const password = await bcrypt.hash(args.password, 10);
 
-  // 2
+  // 2: create a Prisma instance of user to store in the db
   const user = await context.prisma.user.create({
     data: { ...args, password },
   });
 
-  // 3
+  // 3: generate a json web token which is signed with an env variable
   const token = jwt.sign({ userId: user.id }, APP_SECRET);
 
-  // 4
+  // 4: return user and token in an object that adheres to the shape of an AutoPayload object
   return {
     token,
     user,
@@ -18,7 +18,7 @@ async function signup(parent, args, context, info) {
 }
 
 async function login(parent, args, context, info) {
-  // 1
+  // 1: retrieve user from Prisma
   const user = await context.prisma.user.findUnique({
     where: { email: args.email },
   });
@@ -26,15 +26,16 @@ async function login(parent, args, context, info) {
     throw new Error("No such user found");
   }
 
-  // 2
+  // 2: validate user with Bcrypt
   const valid = await bcrypt.compare(args.password, user.password);
   if (!valid) {
     throw new Error("Invalid password");
   }
 
+  // 3: generate a json web token which is signed with an env variable
   const token = jwt.sign({ userId: user.id }, APP_SECRET);
 
-  // 3
+  // 4: return user and token in an object that adheres to the shape of the AutoPayload object
   return {
     token,
     user,
