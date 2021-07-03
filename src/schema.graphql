@@ -32,3 +32,9 @@ type User {
   email: String!
   links: [Link!]!
 }
+
+type Vote {
+  id: ID!
+  link: Link!
+  user: User!
+}
